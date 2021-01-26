@@ -32,6 +32,14 @@ struct Realisation {
 
     nlohmann::json toJSON() const;
     static Realisation fromJSON(const nlohmann::json& json, const std::string& whence);
+
+    bool operator<(const Realisation& other) const { return to_pair() < other.to_pair(); }
+    bool operator==(const Realisation& other) const { return to_pair() == other.to_pair(); }
+
+private:
+    // Just to make comparison operators easier to write
+    std::pair<DrvOutput, StorePath> to_pair() const
+    { return std::make_pair(id, outPath); }
 };
 
 typedef std::map<DrvOutput, Realisation> DrvOutputs;
